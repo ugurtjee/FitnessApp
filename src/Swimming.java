@@ -30,27 +30,27 @@ public class Swimming extends ActivitiesController {
         while (ChoiceSwimming < 1 || ChoiceSwimming > 3) {
             try {
                 ChoiceSwimming = scanner.nextInt();
-
-                switch (ChoiceSwimming) {
-                    case 1:
-                        viewSwimmingData();
-                        break;
-                    case 2:
-                        addSwimmingData();
-                        break;
-                    case 3:
-                        saveDataSwimming();
-                        ActivitiesController activitiesControllerObj = new Activities(profileObj);
-                        activitiesControllerObj.backToActivities();
-                        break;
-                    default:
-                        System.out.println("Verkeerde keuze. Graag een geldige keuze maken!");
-                        ChoiceSwimming = -1;
-                        break;
-                }
-            } catch (InputMismatchException | ParseException e) {
-                System.out.println("Verkeerde input! Graag een geldige keuze maken!");
+            } catch (InputMismatchException e) {
+                System.out.println("Inputmismatch!");
                 scanner.nextLine();
+            }
+
+            switch (ChoiceSwimming) {
+                case 1:
+                    viewSwimmingData();
+                    break;
+                case 2:
+                    addSwimmingData();
+                    break;
+                case 3:
+                    saveDataSwimming();
+                    ActivitiesController activitiesControllerObj = new Activities(profileObj);
+                    activitiesControllerObj.backToActivities();
+                    break;
+                default:
+                    System.out.println("Verkeerde keuze. Graag een geldige keuze maken!");
+                    ChoiceSwimming = -1;
+                    break;
             }
         }
     }
@@ -71,12 +71,14 @@ public class Swimming extends ActivitiesController {
 
         System.out.println("Zwemmen overzicht:");
         for (SwimmingData entry : swimmingList) {
-            System.out.println("U heeft " + entry.getSwimLaps() + " kleine baantjes gezwommen in " + entry.getTime() + " minuten, wat gelijk is aan " + entry.getDistance() + " meter. Geregistreerd op " + entry.getDateAsString());
+            System.out.println("U heeft " + entry.getSwimLaps() + " kleine baantjes gezwommen in " + entry.getTime()
+                    + " minuten, wat gelijk is aan " + entry.getDistance() + " meter. Geregistreerd op "
+                    + entry.getDateAsString());
         }
         backToSubmenuSwimming();
     }
 
-    private void addSwimmingData() throws ParseException {
+    private void addSwimmingData() {
         System.out.print("Hoeveel minuten heeft u gezwommen? ");
         int time = scanner.nextInt();
         scanner.nextLine();
@@ -96,15 +98,15 @@ public class Swimming extends ActivitiesController {
     private void loadDataSwimming() {
         try {
             Scanner fileInput = new Scanner(dataFile);
-    
+
             while (fileInput.hasNextLine()) {
                 String line = fileInput.nextLine();
                 String[] fields = line.split(",");
-    
+
                 int time = Integer.parseInt(fields[0]);
                 int laps = Integer.parseInt(fields[1]);
                 Date date = dateFormat.parse(fields[2]);
-    
+
                 boolean isDuplicate = false;
                 for (SwimmingData data : swimmingList) {
                     if (data.getDate().equals(date)) {
@@ -112,29 +114,29 @@ public class Swimming extends ActivitiesController {
                         break;
                     }
                 }
-    
+
                 if (!isDuplicate) {
                     SwimmingData entry = new SwimmingData(time, laps, date);
                     swimmingList.add(entry);
                 }
             }
-    
+
             fileInput.close();
         } catch (IOException | ParseException e) {
             System.out.println("Error met het laden van de data: ");
             backToSubmenuSwimming();
         }
     }
-    
+
     private void saveDataSwimming() {
         try {
             FileWriter fileOutput = new FileWriter(dataFile, true);
-    
+
             for (SwimmingData entry : swimmingList) {
                 String line = entry.getSwimLaps() + "," + entry.getTime() + "," + entry.getDateAsString() + "\n";
                 fileOutput.write(line);
             }
-    
+
             fileOutput.close();
         } catch (IOException e) {
             System.out.println("Error met het opslaan van de data.");

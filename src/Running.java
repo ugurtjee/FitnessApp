@@ -8,12 +8,12 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Running extends ActivitiesController{
+public class Running extends ActivitiesController {
 
     public Running(Profile profile) {
         super(profile);
     }
-    
+
     private ArrayList<RunningData> runningList = new ArrayList<>();
     private File dataFile = new File("src/running_data.txt");
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -30,8 +30,12 @@ public class Running extends ActivitiesController{
         while (ChoiceRunning < 1 || ChoiceRunning > 3) {
             try {
                 ChoiceRunning = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Inputmismatch!");
+                scanner.nextLine();
+            }
 
-                switch (ChoiceRunning) {
+            switch (ChoiceRunning) {
                 case 1:
                     viewRunningData();
                     break;
@@ -48,15 +52,10 @@ public class Running extends ActivitiesController{
                     ChoiceRunning = -1;
                     break;
             }
-            } catch (InputMismatchException | ParseException e) {
-                System.out.println("Verkeerde input! Graag een geldige keuze maken!");
-                scanner.nextLine();
-            }
         }
     }
 
-    public void backToSubmenuRunning()
-    {
+    public void backToSubmenuRunning() {
         Scanner menuinput = new Scanner(System.in);
         System.out.println("Druk op 'Enter' om terug te gaan.");
         menuinput.hasNextLine();
@@ -69,20 +68,22 @@ public class Running extends ActivitiesController{
             System.out.println("Nog geen activiteiten geregistreerd.");
             backToSubmenuRunning();
         }
-        
+
         System.out.println("Hardlopen overzicht:");
         for (RunningData entry : runningList) {
-            System.out.println("U heeft " + entry.getDistance() + " meter hardgelopen in " + entry.getTime() + " minuten, met een snelheid van " + entry.getTempo()
-             + " km/h. Uw gemeten hartslag was " + entry.getHeartRate() + " slagen per minuut. Geregistreerd op " + entry.getDateAsString());
+            System.out.println("U heeft " + entry.getDistance() + " meter hardgelopen in " + entry.getTime()
+                    + " minuten, met een snelheid van " + entry.getTempo()
+                    + " km/h. Uw gemeten hartslag was " + entry.getHeartRate() + " slagen per minuut. Geregistreerd op "
+                    + entry.getDateAsString());
         }
         backToSubmenuRunning();
     }
-    
-    private void addRunningData() throws ParseException {
+
+    private void addRunningData() {
         System.out.print("Hoeveel minuten heeft u hardgelopen? ");
         int time = scanner.nextInt();
         scanner.nextLine();
-        
+
         System.out.print("Hoeveel meter heeft u hardgelopen? ");
         double distance = scanner.nextDouble();
         scanner.nextLine();
@@ -94,7 +95,7 @@ public class Running extends ActivitiesController{
         Date date = new Date();
         RunningData entry = new RunningData(time, distance, heartRate, date);
         runningList.add(entry);
-        
+
         System.out.println("Hardloopactiviteit toegevoegd. Lekker bezig!");
         backToSubmenuRunning();
     }
@@ -106,12 +107,12 @@ public class Running extends ActivitiesController{
             while (fileInput.hasNextLine()) {
                 String line = fileInput.nextLine();
                 String[] fields = line.split(",");
-                
+
                 int time = Integer.parseInt(fields[0]);
                 double distance = Double.parseDouble(fields[1]);
                 int heartRate = Integer.parseInt(fields[2]);
                 Date date = dateFormat.parse(fields[3]);
-                
+
                 boolean isDuplicate = false;
                 for (RunningData data : runningList) {
                     if (data.getDate().equals(date)) {
@@ -125,23 +126,24 @@ public class Running extends ActivitiesController{
                     runningList.add(entry);
                 }
             }
-            
+
             fileInput.close();
         } catch (IOException | ParseException e) {
             System.out.println("Error met het laden van de data: " + e.getMessage());
             backToSubmenuRunning();
         }
     }
-    
+
     private void saveDataRunning() {
         try {
             FileWriter fileOutput = new FileWriter(dataFile, false);
-    
+
             for (RunningData entry : runningList) {
-                String line = entry.getTime() + "," + entry.getDistance() + "," + entry.getHeartRate() + "," + entry.getDateAsString() + "\n";
+                String line = entry.getTime() + "," + entry.getDistance() + "," + entry.getHeartRate() + ","
+                        + entry.getDateAsString() + "\n";
                 fileOutput.write(line);
             }
-    
+
             fileOutput.close();
         } catch (IOException e) {
             System.out.println("Error met het opslaan van de data: " + e.getMessage());

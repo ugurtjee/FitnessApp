@@ -1,15 +1,14 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Activities extends ActivitiesController{
+public class Activities extends ActivitiesController {
     public Activities(Profile profile) {
         super(profile);
     }
 
     private Scanner scanner = new Scanner(System.in);
 
-    public void showActivities()
-    {
+    public void showActivities() {
         System.out.println("1. Wandelen");
         System.out.println("2. Hardlopen");
         System.out.println("3. Fietsen");
@@ -20,8 +19,11 @@ public class Activities extends ActivitiesController{
         while (ChoiceActivities < 1 || ChoiceActivities > 5) {
             try {
                 ChoiceActivities = scanner.nextInt();
-
-                switch (ChoiceActivities) {
+            } catch (InputMismatchException e) {
+                System.out.println("Inputmismatch!");
+                scanner.nextLine();
+            }
+            switch (ChoiceActivities) {
                 case 1:
                     Walking walking = new Walking(profileObj);
                     walking.showWalkingSubMenu();
@@ -46,15 +48,10 @@ public class Activities extends ActivitiesController{
                     ChoiceActivities = -1;
                     break;
             }
-            } catch (InputMismatchException e) {
-                System.out.println("Verkeerde input! Graag een geldige keuze maken!");
-                scanner.nextLine();
-            }
         }
     }
 
-    public void backToActivities()
-    {
+    public void backToActivities() {
         Scanner menuinput = new Scanner(System.in);
         System.out.println("Druk op 'Enter' om terug naar activiteiten te gaan.");
         menuinput.hasNextLine();

@@ -7,11 +7,11 @@ import java.util.Scanner;
 //     public int checkInput(int[] acceptInput) {
 //         Boolean succes = false;
 //         int input = 0;
-    
+
 //         while(s.hasNextLine()) {
 //             try {    
 //                 input = s.nextInt();
-            
+
 //                 for (int i : acceptInput) {
 //                     if(i == input) 
 //                         succes = true;
@@ -21,15 +21,16 @@ import java.util.Scanner;
 //                     System.out.println("Verkeerde input! Graag een geldige keuze maken!");
 //                 else
 //                     break;
-            
+
 //             } catch (InputMismatchException e) {
 //             System.out.println("Verkeerde input! Graag een geldige keuze maken!");
 //             s.nextLine();
 //         }
-        
+
 //         }
 //         return input;
 //     }
+
 public class InputChecker {
     private Scanner scanner = new Scanner(System.in);
 
@@ -48,7 +49,7 @@ public class InputChecker {
         } while (!validInput);
         return input;
     }
-    
+
     public double handleDoubleInput(String message) {
         double input = 0;
         boolean validInput = false;

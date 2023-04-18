@@ -2,7 +2,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Scanner;
 
-public class Profile{
+public class Profile {
     InputChecker checkInput = new InputChecker();
     Menu menuObj = new Menu(this);
     private String naam;
@@ -16,8 +16,7 @@ public class Profile{
     private double BMI;
     private double VO2Max;
 
-    public void showProfile()
-    {
+    public void showProfile() {
         System.out.println("Naam: " + naam);
         System.out.println("Achternaam: " + achternaam);
         System.out.println("Geboortedatum: " + geboortedatum);
@@ -31,8 +30,7 @@ public class Profile{
         menuObj.backToMenu();
     }
 
-    public void editProfile() 
-    {
+    public void editProfile() {
         Scanner input = new Scanner(System.in);
         System.out.println("Wat is uw naam?");
         naam = input.nextLine();
@@ -52,8 +50,7 @@ public class Profile{
         input.close();
     }
 
-    public void createProfile() 
-    {
+    public void createProfile() {
         Scanner input = new Scanner(System.in);
         System.out.println("Wat is uw naam?");
         naam = input.nextLine();
@@ -72,13 +69,11 @@ public class Profile{
         input.close();
     }
 
-    public double GetWeight()
-    {
+    public double GetWeight() {
         return weight;
     }
 
-    public int GetAge()
-    {
+    public int GetAge() {
         String[] myArray = geboortedatum.split("-");
         int day = Integer.parseInt(myArray[0]);
         int month = Integer.parseInt(myArray[1]);
@@ -90,19 +85,16 @@ public class Profile{
         return age;
     }
 
-    public double GetLength()
-    {
+    public double GetLength() {
         return length;
     }
 
-    public double GetBMI()
-    {
+    public double GetBMI() {
         BMI = (weight / (length * length));
         return BMI;
     }
 
-    public void SetWeight(double weight)
-    {
+    public void SetWeight(double weight) {
         this.weight = weight;
     }
 }

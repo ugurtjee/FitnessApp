@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Walking extends ActivitiesController{
+public class Walking extends ActivitiesController {
 
     public Walking(Profile profile) {
         super(profile);
@@ -30,8 +30,12 @@ public class Walking extends ActivitiesController{
         while (ChoiceWalking < 1 || ChoiceWalking > 3) {
             try {
                 ChoiceWalking = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Inputmismatch!");
+                scanner.nextLine();
+            }
 
-                switch (ChoiceWalking) {
+            switch (ChoiceWalking) {
                 case 1:
                     viewWalkingData();
                     break;
@@ -47,10 +51,6 @@ public class Walking extends ActivitiesController{
                     System.out.println("Verkeerde keuze. Graag een geldige keuze maken!");
                     ChoiceWalking = -1;
                     break;
-            }
-            } catch (InputMismatchException | ParseException e) {
-                System.out.println("Verkeerde input! Graag een geldige keuze maken!");
-                scanner.nextLine();
             }
         }
     }
@@ -68,27 +68,28 @@ public class Walking extends ActivitiesController{
             System.out.println("Nog geen activiteiten geregistreerd.");
             backToSubmenuWalking();
         }
-        
+
         System.out.println("Wandelingen overzicht:");
         for (WalkingData entry : walkingList) {
-            System.out.println("U heeft " + entry.getDistance() + " meter gewandeld in " + entry.getTime() + " minuten, geregistreerd op " + entry.getDateAsString());
+            System.out.println("U heeft " + entry.getDistance() + " meter gewandeld in " + entry.getTime()
+                    + " minuten, geregistreerd op " + entry.getDateAsString());
         }
         backToSubmenuWalking();
     }
-    
-    private void addWalkingData() throws ParseException {
+
+    private void addWalkingData() {
         System.out.print("Hoeveel minuten heeft u gewandeld? ");
         int time = scanner.nextInt();
         scanner.nextLine();
-        
+
         System.out.print("Hoeveel meter heeft u gewandeld? ");
         double distance = scanner.nextDouble();
         scanner.nextLine();
-        
+
         Date date = new Date();
         WalkingData entry = new WalkingData(time, distance, date);
         walkingList.add(entry);
-        
+
         System.out.println("Wandeling toegevoegd. Goed bezig!");
         backToSubmenuWalking();
     }
@@ -100,11 +101,11 @@ public class Walking extends ActivitiesController{
             while (fileInput.hasNextLine()) {
                 String line = fileInput.nextLine();
                 String[] fields = line.split(",");
-                
+
                 int time = Integer.parseInt(fields[0]);
                 double distance = Double.parseDouble(fields[1]);
                 Date date = dateFormat.parse(fields[2]);
-                
+
                 boolean isDuplicate = false;
                 for (WalkingData data : walkingList) {
                     if (data.getDate().equals(date)) {
@@ -118,23 +119,23 @@ public class Walking extends ActivitiesController{
                     walkingList.add(entry);
                 }
             }
-            
+
             fileInput.close();
         } catch (IOException | ParseException e) {
             System.out.println("Error met het laden van de data: ");
             backToSubmenuWalking();
         }
     }
-    
+
     private void saveDataWalking() {
         try {
             FileWriter fileOutput = new FileWriter(dataFile, false);
-    
+
             for (WalkingData entry : walkingList) {
                 String line = entry.getTime() + "," + entry.getDistance() + "," + entry.getDateAsString() + "\n";
                 fileOutput.write(line);
             }
-    
+
             fileOutput.close();
         } catch (IOException e) {
             System.out.println("Error met het opslaan van de data.");

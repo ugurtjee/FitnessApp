@@ -1,8 +1,7 @@
 public class ActivitiesController {
     Profile profileObj;
 
-    public ActivitiesController(Profile profile)
-    {
+    public ActivitiesController(Profile profile) {
         profileObj = profile;
     }
 

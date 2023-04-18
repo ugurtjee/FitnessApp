@@ -5,13 +5,11 @@ public class Menu {
     private Scanner scanner = new Scanner(System.in);
     Profile profileObj;
 
-    public Menu(Profile profile)
-    {
+    public Menu(Profile profile) {
         profileObj = profile;
     }
 
-    public void showMenu()
-    {   
+    public void showMenu() {
         System.out.println("Hallo, Welkom bij de Fitness App!");
         System.out.println("1. Profiel bekijken");
         System.out.println("2. Profiel bewerken");
@@ -20,12 +18,16 @@ public class Menu {
         System.out.println("5. Gezondheidsadvies");
         System.out.println("6. Gewicht bijwerken");
 
-        int ChoiceMenu = -1;
+        int ChoiceMenu = 0;
         while (ChoiceMenu < 1 || ChoiceMenu > 6) {
             try {
                 ChoiceMenu = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Inputmismatch!");
+                scanner.nextLine();
+            }
 
-                switch (ChoiceMenu) {
+            switch (ChoiceMenu) {
                 case 1:
                     profileObj.showProfile();
                     break;
@@ -37,10 +39,11 @@ public class Menu {
                     activiteitenObj.showActivities();
                     break;
                 case 4:
-                    
+                    Coach coach = new Coach();
+                    coach.ShowCoaches(profileObj);
                     break;
                 case 5:
-                HealthAdvice healthAdviceObj = new HealthAdvice();
+                    HealthAdvice healthAdviceObj = new HealthAdvice();
                     healthAdviceObj.giveAdvice(profileObj);
                     break;
                 case 6:
@@ -52,15 +55,10 @@ public class Menu {
                     ChoiceMenu = -1;
                     break;
             }
-            } catch (InputMismatchException e) {
-                System.out.println("Verkeerde input! Graag een geldige keuze maken!");
-                scanner.nextLine();
-            }
         }
     }
 
-    public void backToMenu()
-    {
+    public void backToMenu() {
         Scanner menuinput = new Scanner(System.in);
         System.out.println("Druk op 'Enter' om terug naar het menu te gaan.");
         menuinput.hasNextLine();
